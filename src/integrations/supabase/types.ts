@@ -278,6 +278,10 @@ export type Database = {
           message: string
         }[]
       }
+      finalize_donation: {
+        Args: { _provider_txn?: string; _reference: string; _status: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
