@@ -137,7 +137,7 @@ async function gatewayFetch(
     response = await fetch(`${cfg.baseUrl}${path}`, {
       method: init.method,
       headers,
-      body: init.body,
+      ...(init.body === undefined ? {} : { body: init.body }),
     });
   } catch {
     throw new PaymentGatewayError("تعذر الاتصال ببوابة الدفع. حاول مرة أخرى.");
