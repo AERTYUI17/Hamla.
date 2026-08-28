@@ -14,13 +14,270 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      campaigns: {
+        Row: {
+          beneficiary: string | null
+          category: string | null
+          cover_image: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          donor_count: number
+          goal_amount: number
+          id: string
+          location: string | null
+          organizer_avatar: string | null
+          organizer_id: string | null
+          organizer_name: string
+          organizer_relation: string | null
+          raised_amount: number
+          slug: string
+          status: string
+          story: string | null
+          title: string
+          updated_at: string
+          verified: boolean
+        }
+        Insert: {
+          beneficiary?: string | null
+          category?: string | null
+          cover_image?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          donor_count?: number
+          goal_amount?: number
+          id?: string
+          location?: string | null
+          organizer_avatar?: string | null
+          organizer_id?: string | null
+          organizer_name?: string
+          organizer_relation?: string | null
+          raised_amount?: number
+          slug: string
+          status?: string
+          story?: string | null
+          title: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Update: {
+          beneficiary?: string | null
+          category?: string | null
+          cover_image?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          donor_count?: number
+          goal_amount?: number
+          id?: string
+          location?: string | null
+          organizer_avatar?: string | null
+          organizer_id?: string | null
+          organizer_name?: string
+          organizer_relation?: string | null
+          raised_amount?: number
+          slug?: string
+          status?: string
+          story?: string | null
+          title?: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
+      donations: {
+        Row: {
+          amount: number
+          anonymous: boolean
+          campaign_id: string
+          created_at: string
+          currency: string
+          donor_email: string | null
+          donor_name: string | null
+          id: string
+          message: string | null
+          paid_at: string | null
+          payment_provider: string | null
+          reference: string
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          anonymous?: boolean
+          campaign_id: string
+          created_at?: string
+          currency?: string
+          donor_email?: string | null
+          donor_name?: string | null
+          id?: string
+          message?: string | null
+          paid_at?: string | null
+          payment_provider?: string | null
+          reference: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          anonymous?: boolean
+          campaign_id?: string
+          created_at?: string
+          currency?: string
+          donor_email?: string | null
+          donor_name?: string | null
+          id?: string
+          message?: string | null
+          paid_at?: string | null
+          payment_provider?: string | null
+          reference?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "donations_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoices: {
+        Row: {
+          amount: number
+          currency: string
+          donation_id: string
+          emailed_at: string | null
+          id: string
+          invoice_number: string
+          issued_at: string
+          reference: string
+        }
+        Insert: {
+          amount: number
+          currency?: string
+          donation_id: string
+          emailed_at?: string | null
+          id?: string
+          invoice_number: string
+          issued_at?: string
+          reference: string
+        }
+        Update: {
+          amount?: number
+          currency?: string
+          donation_id?: string
+          emailed_at?: string | null
+          id?: string
+          invoice_number?: string
+          issued_at?: string
+          reference?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_donation_id_fkey"
+            columns: ["donation_id"]
+            isOneToOne: true
+            referencedRelation: "donations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          donation_id: string
+          id: string
+          provider: string
+          provider_transaction_id: string | null
+          raw: Json | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          donation_id: string
+          id?: string
+          provider: string
+          provider_transaction_id?: string | null
+          raw?: Json | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          donation_id?: string
+          id?: string
+          provider?: string
+          provider_transaction_id?: string | null
+          raw?: Json | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_donation_id_fkey"
+            columns: ["donation_id"]
+            isOneToOne: false
+            referencedRelation: "donations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          id: string
+          name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      campaign_donations: {
+        Args: { _limit?: number; _order?: string; _slug: string }
+        Returns: {
+          amount: number
+          created_at: string
+          donor_name: string
+          id: string
+          message: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
