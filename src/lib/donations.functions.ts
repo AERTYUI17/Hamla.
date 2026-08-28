@@ -152,7 +152,7 @@ export const verifyDonation = createServerFn({ method: "POST" })
       const { data: result } = await db.rpc("finalize_donation", {
         _reference: data.reference,
         _status: snapshot.status,
-        _provider_txn: snapshot.providerTransactionId,
+        _provider_txn: snapshot.providerTransactionId ?? undefined,
       });
       const settled = (result ?? {}) as { status?: string; invoice_number?: string | null };
       return {
