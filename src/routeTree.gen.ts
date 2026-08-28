@@ -10,33 +10,89 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PaymentSandboxRouteImport } from './routes/payment-sandbox'
+import { Route as DonationReferenceRouteImport } from './routes/donation.$reference'
+import { Route as ReceiptReferenceRouteImport } from './routes/receipt.$reference'
+import { Route as ApiPublicPaymentWebhookRouteImport } from './routes/api/public/payment-webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaymentSandboxRoute = PaymentSandboxRouteImport.update({
+  id: '/payment-sandbox',
+  path: '/payment-sandbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonationReferenceRoute = DonationReferenceRouteImport.update({
+  id: '/donation/$reference',
+  path: '/donation/$reference',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReceiptReferenceRoute = ReceiptReferenceRouteImport.update({
+  id: '/receipt/$reference',
+  path: '/receipt/$reference',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicPaymentWebhookRoute = ApiPublicPaymentWebhookRouteImport.update({
+  id: '/api/public/payment-webhook',
+  path: '/api/public/payment-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/payment-sandbox': typeof PaymentSandboxRoute
+  '/donation/$reference': typeof DonationReferenceRoute
+  '/receipt/$reference': typeof ReceiptReferenceRoute
+  '/api/public/payment-webhook': typeof ApiPublicPaymentWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/payment-sandbox': typeof PaymentSandboxRoute
+  '/donation/$reference': typeof DonationReferenceRoute
+  '/receipt/$reference': typeof ReceiptReferenceRoute
+  '/api/public/payment-webhook': typeof ApiPublicPaymentWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/payment-sandbox': typeof PaymentSandboxRoute
+  '/donation/$reference': typeof DonationReferenceRoute
+  '/receipt/$reference': typeof ReceiptReferenceRoute
+  '/api/public/payment-webhook': typeof ApiPublicPaymentWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/payment-sandbox'
+    | '/donation/$reference'
+    | '/receipt/$reference'
+    | '/api/public/payment-webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/payment-sandbox'
+    | '/donation/$reference'
+    | '/receipt/$reference'
+    | '/api/public/payment-webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/payment-sandbox'
+    | '/donation/$reference'
+    | '/receipt/$reference'
+    | '/api/public/payment-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PaymentSandboxRoute: typeof PaymentSandboxRoute
+  DonationReferenceRoute: typeof DonationReferenceRoute
+  ReceiptReferenceRoute: typeof ReceiptReferenceRoute
+  ApiPublicPaymentWebhookRoute: typeof ApiPublicPaymentWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +104,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/payment-sandbox': {
+      id: '/payment-sandbox'
+      path: '/payment-sandbox'
+      fullPath: '/payment-sandbox'
+      preLoaderRoute: typeof PaymentSandboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donation/$reference': {
+      id: '/donation/$reference'
+      path: '/donation/$reference'
+      fullPath: '/donation/$reference'
+      preLoaderRoute: typeof DonationReferenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/receipt/$reference': {
+      id: '/receipt/$reference'
+      path: '/receipt/$reference'
+      fullPath: '/receipt/$reference'
+      preLoaderRoute: typeof ReceiptReferenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/payment-webhook': {
+      id: '/api/public/payment-webhook'
+      path: '/api/public/payment-webhook'
+      fullPath: '/api/public/payment-webhook'
+      preLoaderRoute: typeof ApiPublicPaymentWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PaymentSandboxRoute: PaymentSandboxRoute,
+  DonationReferenceRoute: DonationReferenceRoute,
+  ReceiptReferenceRoute: ReceiptReferenceRoute,
+  ApiPublicPaymentWebhookRoute: ApiPublicPaymentWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
