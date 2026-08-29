@@ -1,19 +1,31 @@
 import { Menu, Plus, Search, X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 import { HamlaLogo } from "./logo";
 import { Button } from "@/components/ui/button";
 import { useAuth, displayNameOf } from "@/hooks/use-auth";
+import { useRole } from "@/hooks/use-role";
 import { supabase } from "@/integrations/supabase/client";
 
 export function SiteHeader({ onDonate }: { onDonate?: () => void }) {
   const [open, setOpen] = useState(false);
   const { user, loading } = useAuth();
+  const role = useRole();
 
   const signIn = async () => {
     const { lovable } = await import("@/integrations/lovable/index");
     await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
   };
+
+  const roleLink =
+    role.status === "ready"
+      ? role.role === "user"
+        ? { to: "/become-a-charity", label: "طلب صفة جمعية خيرية" }
+        : role.role === "charity_group"
+        ? { to: "/charity", label: "لوحة تحكم الجمعية" }
+        : { to: "/admin", label: "لوحة الإدارة" }
+      : null;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/85">
@@ -45,6 +57,11 @@ export function SiteHeader({ onDonate }: { onDonate?: () => void }) {
         <div className="ms-auto hidden items-center gap-2 md:flex">
           {loading ? null : user ? (
             <>
+              {roleLink ? (
+                <Button asChild variant="ghost" size="sm">
+                  <Link to={roleLink.to}>{roleLink.label}</Link>
+                </Button>
+              ) : null}
               <span className="max-w-[140px] truncate text-sm text-subtle-foreground">
                 {displayNameOf(user)}
               </span>
@@ -93,6 +110,15 @@ export function SiteHeader({ onDonate }: { onDonate?: () => void }) {
             <button type="button" className="rounded-md px-2 py-3 text-start hover:bg-accent">
               إنشاء حملة
             </button>
+            {roleLink ? (
+              <Link
+                to={roleLink.to}
+                className="rounded-md px-2 py-3 text-start hover:bg-accent"
+                onClick={() => setOpen(false)}
+              >
+                {roleLink.label}
+              </Link>
+            ) : null}
             {user ? (
               <button
                 type="button"

@@ -43,7 +43,7 @@ export const startDonation = createServerFn({ method: "POST" })
 
     const { data: campaign } = await db
       .from("campaigns")
-      .select("id, title, currency, status")
+      .select("id, title, currency, status, charity_group_id")
       .eq("slug", data.slug)
       .maybeSingle();
     if (!campaign || campaign.status !== "published") throw new Error("الحملة غير متوفرة.");
@@ -71,6 +71,7 @@ export const startDonation = createServerFn({ method: "POST" })
         status: "PENDING",
         reference,
         payment_provider: provider.id,
+        charity_group_id: campaign.charity_group_id ?? null,
       })
       .select("id")
       .single();

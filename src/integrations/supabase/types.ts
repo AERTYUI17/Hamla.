@@ -18,6 +18,10 @@ export type Database = {
         Row: {
           beneficiary: string | null
           category: string | null
+          certified: boolean
+          certified_at: string | null
+          certified_by: string | null
+          charity_group_id: string | null
           cover_image: string | null
           created_at: string
           currency: string
@@ -32,7 +36,7 @@ export type Database = {
           organizer_relation: string | null
           raised_amount: number
           slug: string
-          status: string
+          status: Database["public"]["Enums"]["campaign_status"]
           story: string | null
           title: string
           updated_at: string
@@ -41,6 +45,10 @@ export type Database = {
         Insert: {
           beneficiary?: string | null
           category?: string | null
+          certified?: boolean
+          certified_at?: string | null
+          certified_by?: string | null
+          charity_group_id?: string | null
           cover_image?: string | null
           created_at?: string
           currency?: string
@@ -55,7 +63,7 @@ export type Database = {
           organizer_relation?: string | null
           raised_amount?: number
           slug: string
-          status?: string
+          status?: Database["public"]["Enums"]["campaign_status"]
           story?: string | null
           title: string
           updated_at?: string
@@ -64,6 +72,10 @@ export type Database = {
         Update: {
           beneficiary?: string | null
           category?: string | null
+          certified?: boolean
+          certified_at?: string | null
+          certified_by?: string | null
+          charity_group_id?: string | null
           cover_image?: string | null
           created_at?: string
           currency?: string
@@ -78,7 +90,7 @@ export type Database = {
           organizer_relation?: string | null
           raised_amount?: number
           slug?: string
-          status?: string
+          status?: Database["public"]["Enums"]["campaign_status"]
           story?: string | null
           title?: string
           updated_at?: string
@@ -91,6 +103,7 @@ export type Database = {
           amount: number
           anonymous: boolean
           campaign_id: string
+          charity_group_id: string | null
           created_at: string
           currency: string
           donor_email: string | null
@@ -108,6 +121,7 @@ export type Database = {
           amount: number
           anonymous?: boolean
           campaign_id: string
+          charity_group_id?: string | null
           created_at?: string
           currency?: string
           donor_email?: string | null
@@ -125,6 +139,7 @@ export type Database = {
           amount?: number
           anonymous?: boolean
           campaign_id?: string
+          charity_group_id?: string | null
           created_at?: string
           currency?: string
           donor_email?: string | null
@@ -243,6 +258,8 @@ export type Database = {
           email: string | null
           id: string
           name: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          status: string
           updated_at: string
         }
         Insert: {
@@ -251,6 +268,8 @@ export type Database = {
           email?: string | null
           id: string
           name?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          status?: string
           updated_at?: string
         }
         Update: {
@@ -259,7 +278,162 @@ export type Database = {
           email?: string | null
           id?: string
           name?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          status?: string
           updated_at?: string
+        }
+        Relationships: []
+      },
+      user_roles: {
+        Row: { granted_at: string; granted_by: string | null; role: Database["public"]["Enums"]["user_role"]; user_id: string }
+        Insert: { granted_at?: string; granted_by?: string | null; role: Database["public"]["Enums"]["user_role"]; user_id: string }
+        Update: { granted_at?: string; granted_by?: string | null; role?: Database["public"]["Enums"]["user_role"]; user_id?: string }
+        Relationships: []
+      },
+      charity_groups: {
+        Row: {
+          address: string | null; category: string | null; commune: string | null; created_at: string;
+          description: string | null; email: string | null; id: string; logo_url: string | null;
+          name: string; phone: string | null; registration_date: string | null;
+          registration_number: string | null; representative_email: string | null;
+          representative_name: string | null; representative_phone: string | null;
+          slug: string; status: Database["public"]["Enums"]["charity_status"]; updated_at: string;
+          user_id: string; verified: boolean; verified_at: string | null; website: string | null; wilaya: string | null
+        }
+        Insert: {
+          address?: string | null; category?: string | null; commune?: string | null; created_at?: string;
+          description?: string | null; email?: string | null; id?: string; logo_url?: string | null;
+          name: string; phone?: string | null; registration_date?: string | null;
+          registration_number?: string | null; representative_email?: string | null;
+          representative_name?: string | null; representative_phone?: string | null;
+          slug: string; status?: Database["public"]["Enums"]["charity_status"]; updated_at?: string;
+          user_id: string; verified?: boolean; verified_at?: string | null; website?: string | null; wilaya?: string | null
+        }
+        Update: {
+          address?: string | null; category?: string | null; commune?: string | null; created_at?: string;
+          description?: string | null; email?: string | null; id?: string; logo_url?: string | null;
+          name?: string; phone?: string | null; registration_date?: string | null;
+          registration_number?: string | null; representative_email?: string | null;
+          representative_name?: string | null; representative_phone?: string | null;
+          slug?: string; status?: Database["public"]["Enums"]["charity_status"]; updated_at?: string;
+          user_id?: string; verified?: boolean; verified_at?: string | null; website?: string | null; wilaya?: string | null
+        }
+        Relationships: []
+      },
+      charity_applications: {
+        Row: {
+          admin_notes: string | null; charity_group_id: string | null; id: string;
+          org_address: string; org_category: string; org_commune: string; org_description: string | null;
+          org_email: string; org_name: string; org_name_ar: string; org_phone: string; org_website: string | null;
+          org_wilaya: string; registration_date: string | null; registration_number: string | null; rep_email: string;
+          rep_name: string; rep_phone: string; reviewed_at: string | null; reviewed_by: string | null;
+          status: Database["public"]["Enums"]["app_status"]; submitted_at: string; user_id: string
+        }
+        Insert: {
+          admin_notes?: string | null; charity_group_id?: string | null; id?: string;
+          org_address: string; org_category: string; org_commune: string; org_description?: string | null;
+          org_email: string; org_name: string; org_name_ar: string; org_phone: string; org_website?: string | null;
+          org_wilaya: string; registration_date?: string | null; registration_number?: string | null; rep_email: string;
+          rep_name: string; rep_phone: string; reviewed_at?: string | null; reviewed_by?: string | null;
+          status?: Database["public"]["Enums"]["app_status"]; submitted_at?: string; user_id: string
+        }
+        Update: {
+          admin_notes?: string | null; charity_group_id?: string | null; id?: string;
+          org_address?: string; org_category?: string; org_commune?: string; org_description?: string | null;
+          org_email?: string; org_name?: string; org_name_ar?: string; org_phone?: string; org_website?: string | null;
+          org_wilaya?: string; registration_date?: string | null; registration_number?: string | null; rep_email?: string;
+          rep_name?: string; rep_phone?: string; reviewed_at?: string | null; reviewed_by?: string | null;
+          status?: Database["public"]["Enums"]["app_status"]; submitted_at?: string; user_id?: string
+        }
+        Relationships: []
+      },
+      charity_documents: {
+        Row: {
+          charity_application_id: string; id: string; mime_type: string; original_filename: string | null;
+          size_bytes: number; storage_path: string; type: string; uploaded_at: string
+        }
+        Insert: {
+          charity_application_id: string; id?: string; mime_type: string; original_filename?: string | null;
+          size_bytes: number; storage_path: string; type: string; uploaded_at?: string
+        }
+        Update: {
+          charity_application_id?: string; id?: string; mime_type?: string; original_filename?: string | null;
+          size_bytes?: number; storage_path?: string; type?: string; uploaded_at?: string
+        }
+        Relationships: []
+      },
+      payouts: {
+        Row: {
+          amount: number; approved_at: string | null; approved_by: string | null;
+          campaign_id: string | null; charity_group_id: string; created_at: string; currency: string;
+          destination: Json; external_reference: string | null; id: string; notes: string | null;
+          paid_at: string | null; paid_by: string | null; rejection_reason: string | null;
+          requested_at: string; status: Database["public"]["Enums"]["payout_status"]
+        }
+        Insert: {
+          amount: number; approved_at?: string | null; approved_by?: string | null;
+          campaign_id?: string | null; charity_group_id: string; created_at?: string; currency?: string;
+          destination: Json; external_reference?: string | null; id?: string; notes?: string | null;
+          paid_at?: string | null; paid_by?: string | null; rejection_reason?: string | null;
+          requested_at?: string; status?: Database["public"]["Enums"]["payout_status"]
+        }
+        Update: {
+          amount?: number; approved_at?: string | null; approved_by?: string | null;
+          campaign_id?: string | null; charity_group_id?: string; created_at?: string; currency?: string;
+          destination?: Json; external_reference?: string | null; id?: string; notes?: string | null;
+          paid_at?: string | null; paid_by?: string | null; rejection_reason?: string | null;
+          requested_at?: string; status?: Database["public"]["Enums"]["payout_status"]
+        }
+        Relationships: []
+      },
+      ledger_entries: {
+        Row: {
+          amount: number; campaign_id: string | null; charity_group_id: string | null;
+          created_at: string; created_by: string | null; currency: string; donation_id: string | null;
+          id: string; payout_id: string | null; reference: string | null; status: string;
+          type: Database["public"]["Enums"]["ledger_type"]
+        }
+        Insert: {
+          amount: number; campaign_id?: string | null; charity_group_id?: string | null;
+          created_at?: string; created_by?: string | null; currency?: string; donation_id?: string | null;
+          id?: string; payout_id?: string | null; reference?: string | null; status?: string;
+          type: Database["public"]["Enums"]["ledger_type"]
+        }
+        Update: {
+          amount?: number; campaign_id?: string | null; charity_group_id?: string | null;
+          created_at?: string; created_by?: string | null; currency?: string; donation_id?: string | null;
+          id?: string; payout_id?: string | null; reference?: string | null; status?: string;
+          type?: Database["public"]["Enums"]["ledger_type"]
+        }
+        Relationships: []
+      },
+      audit_logs: {
+        Row: {
+          action: Database["public"]["Enums"]["audit_action"]; admin_id: string; created_at: string;
+          id: string; metadata: Json; target_id: string; target_type: string
+        }
+        Insert: {
+          action: Database["public"]["Enums"]["audit_action"]; admin_id: string; created_at?: string;
+          id?: string; metadata?: Json; target_id: string; target_type: string
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["audit_action"]; admin_id?: string; created_at?: string;
+          id?: string; metadata?: Json; target_id?: string; target_type?: string
+        }
+        Relationships: []
+      },
+      notifications: {
+        Row: {
+          created_at: string; id: string; message: string; read: boolean; read_at: string | null;
+          title: string; type: string; user_id: string
+        }
+        Insert: {
+          created_at?: string; id?: string; message: string; read?: boolean; read_at?: string | null;
+          title: string; type: string; user_id: string
+        }
+        Update: {
+          created_at?: string; id?: string; message?: string; read?: boolean; read_at?: string | null;
+          title?: string; type?: string; user_id?: string
         }
         Relationships: []
       }
@@ -282,9 +456,31 @@ export type Database = {
         Args: { _provider_txn?: string; _reference: string; _status: string }
         Returns: Json
       }
+      has_role: { Args: { _role: Database["public"]["Enums"]["user_role"]; _user_id: string }; Returns: boolean }
+      get_my_role: { Args: Record<PropertyKey, never>; Returns: Database["public"]["Enums"]["user_role"] }
+      approve_charity_application: { Args: { _application_id: string; _notes?: string | null; _reviewer_id: string }; Returns: string }
+      reject_charity_application: { Args: { _application_id: string; _reason: string; _reviewer_id: string }; Returns: undefined }
+      request_more_info: { Args: { _application_id: string; _notes: string; _reviewer_id: string }; Returns: undefined }
+      certify_campaign: { Args: { _admin_id: string; _campaign_id: string }; Returns: undefined }
+      remove_campaign_certification: { Args: { _admin_id: string; _campaign_id: string; _reason: string }; Returns: undefined }
+      publish_campaign: { Args: { _admin_id: string; _campaign_id: string }; Returns: undefined }
+      reject_campaign: { Args: { _admin_id: string; _campaign_id: string; _reason: string }; Returns: undefined }
+      suspend_campaign: { Args: { _admin_id: string; _campaign_id: string; _reason: string }; Returns: undefined }
+      reactivate_campaign: { Args: { _admin_id: string; _campaign_id: string }; Returns: undefined }
+      request_payout: { Args: { _amount: number; _charity_group_id: string; _currency: string; _destination: Json }; Returns: string }
+      approve_payout: { Args: { _admin_id: string; _payout_id: string }; Returns: undefined }
+      reject_payout: { Args: { _admin_id: string; _payout_id: string; _reason: string }; Returns: undefined }
+      mark_payout_paid: { Args: { _admin_id: string; _external_reference: string; _payout_id: string }; Returns: undefined }
+      get_charity_balances: { Args: { _charity_group_id: string }; Returns: Json }
     }
     Enums: {
-      [_ in never]: never
+      user_role: "user" | "charity_group" | "admin"
+      charity_status: "pending" | "under_review" | "approved" | "rejected" | "more_info_required" | "suspended"
+      app_status: "draft" | "submitted" | "under_review" | "approved" | "rejected" | "more_info_required" | "suspended"
+      campaign_status: "draft" | "submitted" | "published" | "paused" | "completed" | "rejected" | "suspended" | "archived"
+      payout_status: "pending" | "under_review" | "approved" | "processing" | "paid" | "rejected" | "failed"
+      ledger_type: "donation" | "payment_fee" | "platform_fee" | "refund" | "payout" | "payout_fee" | "adjustment"
+      audit_action: "approve_charity" | "reject_charity" | "suspend_charity" | "approve_campaign" | "reject_campaign" | "certify_campaign" | "remove_certification" | "suspend_campaign" | "approve_payout" | "reject_payout" | "mark_payout_paid" | "suspend_user" | "reactivate_user" | "view_charity_document"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -411,6 +607,14 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["user", "charity_group", "admin"],
+      charity_status: ["pending", "under_review", "approved", "rejected", "more_info_required", "suspended"],
+      app_status: ["draft", "submitted", "under_review", "approved", "rejected", "more_info_required", "suspended"],
+      campaign_status: ["draft", "submitted", "published", "paused", "completed", "rejected", "suspended", "archived"],
+      payout_status: ["pending", "under_review", "approved", "processing", "paid", "rejected", "failed"],
+      ledger_type: ["donation", "payment_fee", "platform_fee", "refund", "payout", "payout_fee", "adjustment"],
+      audit_action: ["approve_charity", "reject_charity", "suspend_charity", "approve_campaign", "reject_campaign", "certify_campaign", "remove_certification", "suspend_campaign", "approve_payout", "reject_payout", "mark_payout_paid", "suspend_user", "reactivate_user", "view_charity_document"],
+    },
   },
 } as const

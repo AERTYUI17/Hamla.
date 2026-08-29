@@ -23,7 +23,7 @@ export const Route = createFileRoute("/api/public/payment-webhook")({
           return new Response("invalid signature", { status: 401 });
         }
 
-        if (!result.verified || !result.reference) {
+        if (!result.reference) {
           return new Response("invalid signature", { status: 401 });
         }
 
